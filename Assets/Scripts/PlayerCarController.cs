@@ -13,7 +13,7 @@ public class PlayerCarController : MonoBehaviour
     public AudioSource idleAudioSource; // Idle sound
 
     private Rigidbody rb;
-    private float currentSpeed = 0f;
+    public float currentSpeed = 0f;
     private float moveInput = 0f;
     private float turnInput = 0f;
 
