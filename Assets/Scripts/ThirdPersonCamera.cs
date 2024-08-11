@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
@@ -11,18 +12,18 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Desired position of the camera
-        Vector3 desiredPosition = carTransform.position + offset;
+        /// Calculate the desired position with offset
+        Vector3 desiredPosition = carTransform.position + carTransform.rotation * offset;
 
-        // Smooth transition to the desired position
+        // Smoothly move the camera towards the desired position
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-
-        // Apply the smoothed position to the camera
         transform.position = smoothedPosition;
 
-        // Rotate the camera to follow the car's rotation
-        Quaternion desiredRotation = Quaternion.LookRotation(carTransform.position - transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+        // Ensure the camera is always looking at the car
+        transform.LookAt(carTransform);
+
     }
+
+
 
 }
