@@ -10,16 +10,17 @@ public class RearviewCameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Calculate the desired position behind the car using the car's forward direction
-        Vector3 desiredPosition = carTransform.position - carTransform.forward * offset.z + carTransform.up * offset.y;
+        // Calculate the desired position behind the car using the car's rotation and offset
+        Vector3 desiredPosition = carTransform.position + carTransform.rotation * offset;
 
         // Smoothly move the camera towards the desired position
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 
-        // Ensure the camera is always looking at the back of the car
-        transform.LookAt(carTransform.position + carTransform.forward * 2f);
+        // Ensure the camera is always looking at the car
+        transform.LookAt(carTransform.position);
     }
+
 
 
 }

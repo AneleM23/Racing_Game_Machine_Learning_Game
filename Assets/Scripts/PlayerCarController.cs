@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerCarController : MonoBehaviour
 {
@@ -11,30 +13,53 @@ public class PlayerCarController : MonoBehaviour
 
     public AudioSource accelerationAudioSource;
     public AudioSource idleAudioSource; // Idle sound
+    public GameObject restartButton; // Reference to the Restart button
 
     private Rigidbody rb;
     public float currentSpeed = 0f;
     private float moveInput = 0f;
     private float turnInput = 0f;
+    private bool isCarStopped = false; // Flag to check if the car is stopped
+
+    private Vector3 initialPosition;  // Store initial position for resetting
+    private Quaternion initialRotation; // Store initial rotation for resetting
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         accelerationAudioSource.Play(); // Play the sound at the start
+
+        // Save the initial position and rotation
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
+
+        // Hide the restart button at the start
+        if (restartButton != null)
+        {
+            restartButton.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        moveInput = -Input.GetAxis("Vertical"); // Invert the vertical input
-        turnInput = -Input.GetAxis("Horizontal"); // Invert the horizontal input
+        if (!isCarStopped)
+        {
+            moveInput = -Input.GetAxis("Vertical"); // Invert the vertical input
+            turnInput = -Input.GetAxis("Horizontal"); // Invert the horizontal input
 
-        HandleAudio();
+            HandleAudio();
+        }
     }
 
     private void FixedUpdate()
     {
-        HandleMovement();
-        HandleTurning();
+        if (!isCarStopped)
+        {
+            HandleMovement();
+            HandleTurning();
+        }
+
+        CheckIfFlipped();
     }
 
     private void HandleMovement()
@@ -105,5 +130,46 @@ public class PlayerCarController : MonoBehaviour
             accelerationAudioSource.Stop();
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Check if the car hits something hard enough
+        if (collision.relativeVelocity.magnitude > 5f) // Threshold can be adjusted
+        {
+            StopCar();
+        }
+    }
+
+    private void CheckIfFlipped()
+    {
+        // Check if the car is flipped over based on its rotation
+        if (Vector3.Dot(transform.up, Vector3.down) > 0.5f) // Adjust the threshold if needed
+        {
+            StopCar();
+        }
+    }
+
+    private void StopCar()
+    {
+        isCarStopped = true;
+        currentSpeed = 0f;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        // Show the restart button
+        if (restartButton != null)
+        {
+            restartButton.SetActive(true); // Show the button
+        }
+
+        Debug.Log("Car Crashed!"); // Log crash message
+    }
+
+    public void RestartGame()
+    {
+        // Restart the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 
 }

@@ -18,6 +18,7 @@ public class MenuMusicManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject); // Persist across scenes
+            SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to sceneLoaded event
         }
         else
         {
@@ -35,12 +36,19 @@ public class MenuMusicManager : MonoBehaviour
         }
     }
 
-    private void OnLevelWasLoaded(int level)
+    // Use SceneManager.sceneLoaded instead of OnLevelWasLoaded
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        string sceneName = SceneManager.GetSceneByBuildIndex(level).name;
+        string sceneName = scene.name;
 
-        if (sceneName != "Menu" && sceneName != "Credits")
+        // Check if we are in a menu or credits scene
+        if (sceneName == "Menu" || sceneName == "Credits")
         {
+            // Do nothing, keep music playing
+        }
+        else
+        {
+            // If it's not the menu or credits, stop the music manager
             Destroy(gameObject); // Destroy the music manager when leaving menu or credits
         }
     }
@@ -60,19 +68,20 @@ public class MenuMusicManager : MonoBehaviour
         musicStarted = false; // Reset the flag so music can restart if needed
     }
 
-    // Function to start the game and load Level1
     public void StartGame()
     {
         SceneManager.LoadScene("Level1");
     }
 
-    // Function to load the Credits scene
     public void GoToCredits()
     {
         SceneManager.LoadScene("Credits");
     }
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
 
-    // Function to quit the game
     public void QuitGame()
     {
 #if UNITY_EDITOR
@@ -81,6 +90,12 @@ public class MenuMusicManager : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe from sceneLoaded event
+    }
+
 
 
 
