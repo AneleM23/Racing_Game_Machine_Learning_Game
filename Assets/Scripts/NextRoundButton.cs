@@ -9,15 +9,15 @@ public class NextRoundButton : MonoBehaviour
 
     public void OnYesButtonClick()
     {
-       
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("AI_LEVEL");
     }
 
     public void OnNoButtonClick()
     {
         // Unpause the game and hide the UI
         Time.timeScale = 1f;
-        gameObject.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }
