@@ -8,19 +8,42 @@ public class LapSystem : MonoBehaviour
     public int totalLaps = 5;
     private int currentLap = 0;
     private bool canCountLap = true;
+    private int currentCheckpointIndex = 0; // Track which checkpoint is next
 
     public Text lapCounterText;
     public GameObject nextRoundUI;
+    public List<Transform> checkpoints; // Add all your checkpoints here
+    private HashSet<int> passedCheckpoints; // Keep track of passed checkpoints
 
     private void Start()
     {
         UpdateLapCounter();
         nextRoundUI.SetActive(false);
+        passedCheckpoints = new HashSet<int>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("LapTrigger") && canCountLap)
+        // Handle when car enters a checkpoint
+        if (other.CompareTag("Checkpoint"))
+        {
+            // Get checkpoint index from the checkpoint game object
+            Checkpoint checkpoint = other.GetComponent<Checkpoint>();
+            if (checkpoint.index == currentCheckpointIndex)
+            {
+                passedCheckpoints.Add(currentCheckpointIndex); // Mark this checkpoint as passed
+                currentCheckpointIndex++;
+
+                // Loop back to the first checkpoint after the last
+                if (currentCheckpointIndex >= checkpoints.Count)
+                {
+                    currentCheckpointIndex = 0;
+                }
+            }
+        }
+
+        // Handle lap counting when all checkpoints are passed and player crosses finish line
+        if (other.CompareTag("LapTrigger") && passedCheckpoints.Count == checkpoints.Count && canCountLap)
         {
             currentLap++;
             UpdateLapCounter();
@@ -30,6 +53,8 @@ public class LapSystem : MonoBehaviour
                 ShowNextRoundUI();
             }
 
+            // Reset checkpoints after lap is counted
+            passedCheckpoints.Clear();
             StartCoroutine(LapCooldown());
         }
     }
@@ -51,5 +76,6 @@ public class LapSystem : MonoBehaviour
         yield return new WaitForSeconds(1f); // Prevent multiple triggers
         canCountLap = true;
     }
-
 }
+
+
