@@ -7,11 +7,18 @@ public class CountdownTimer : MonoBehaviour
     public Text countdownText;  // Reference to the UI Text component for countdown display
     public int countdownTime = 3; // Starting countdown time (from 3)
     public PlayerCarController playerCarController; // Reference to the car controller script
+    public AIDriving[] aiVehicles;
 
     private void Start()
     {
         // Disable the car movement at the start
         playerCarController.enabled = false;
+
+        // Disable AI movement
+        foreach (AIDriving aiVehicle in aiVehicles)
+        {
+            aiVehicle.enabled = false;
+        }
 
         // Start the countdown coroutine
         StartCoroutine(CountdownRoutine());
@@ -37,6 +44,12 @@ public class CountdownTimer : MonoBehaviour
 
         // Enable the car movement after the countdown
         playerCarController.enabled = true;
+
+        // Enable AI movement after the countdown
+        foreach (AIDriving aiVehicle in aiVehicles)
+        {
+            aiVehicle.enabled = true;
+        }
     }
 
 }
