@@ -6,11 +6,12 @@ TagManager:
   tags:
   - LapTrigger
   - Checkpoint
+  - Corner
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - AILayer
   - Water
   - UI
   - 
