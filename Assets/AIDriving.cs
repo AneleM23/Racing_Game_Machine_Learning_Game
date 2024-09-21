@@ -12,7 +12,10 @@ public class AIDriving : MonoBehaviour
     public float speed = 10f;
     public float rotationSpeed = 50f;
     public float acceleration = 10f;
-    public float maxSpeed = 200f;
+    public float maxSpeed = 120f;  // Adjusted max speed for race cars
+    public float detectionRange = 5f;  // Range to detect other vehicles ahead
+    public LayerMask aiLayer;  // Layer mask for detecting other AI vehicles
+    public float cornerDecelerationFactor = 0.3f;  // Reduced factor for less deceleration at corners
 
     private Rigidbody rb;
 
@@ -36,6 +39,7 @@ public class AIDriving : MonoBehaviour
     private void Update()
     {
         DriveTowardsNextWaypoint();
+        DetectAndAvoidOtherVehicles();  // Check for nearby AI vehicles and avoid them
     }
 
     private void DriveTowardsNextWaypoint()
@@ -71,6 +75,7 @@ public class AIDriving : MonoBehaviour
 
         // Manage acceleration and deceleration
         AdjustSpeedOnCorners();
+        ManageOverallSpeed();  // New method for overall speed control
     }
 
     // Randomly select a lane for each AI vehicle
@@ -94,28 +99,60 @@ public class AIDriving : MonoBehaviour
 
     private void AdjustSpeedOnCorners()
     {
-        // Slow down the vehicle based on waypoint conditions (corner sharpness)
-        if (currentWaypointIndex > 0)
+        // Check if the next waypoint is tagged as a corner
+        if (currentWaypointIndex < currentLaneWaypoints.Length && currentLaneWaypoints[currentWaypointIndex].CompareTag("Corner"))
         {
-            Transform previousWaypoint = currentLaneWaypoints[currentWaypointIndex - 1];
-            Vector3 toNextWaypoint = currentLaneWaypoints[currentWaypointIndex].position - previousWaypoint.position;
-
-            float cornerAngle = Vector3.Angle(transform.forward, toNextWaypoint.normalized);
-
-            // For sharper corners, reduce speed; otherwise, increase it
-            if (cornerAngle > 45f)  // Sharper turns
-            {
-                speed = Mathf.Max(speed - acceleration * Time.deltaTime, 20f);  // Decelerate for corners
-            }
-            else
-            {
-                speed = Mathf.Min(speed + acceleration * Time.deltaTime, maxSpeed);  // Speed up
-            }
+            // Slightly decelerate for corners
+            speed = Mathf.Max(speed - (acceleration * cornerDecelerationFactor * Time.deltaTime), 0.8f * maxSpeed);  // Use the factor for deceleration
         }
         else
         {
-            speed = Mathf.Min(speed + acceleration * Time.deltaTime, maxSpeed);  // Gradually speed up
+            // Speed up to max speed after passing the corner
+            speed = Mathf.Min(speed + (acceleration * Time.deltaTime), maxSpeed);  // Gradually increase speed back to max
+        }
+    }
+
+    private void ManageOverallSpeed()
+    {
+        // Gradually reduce speed when not accelerating
+        if (speed > 20f)  // Prevent it from going below a certain minimum speed
+        {
+            speed = Mathf.Max(speed - (acceleration * 0.1f * Time.deltaTime), 20f);  // Gradually reduce speed
+        }
+    }
+
+    private void DetectAndAvoidOtherVehicles()
+    {
+        // Check for any AI vehicles ahead within the detection range
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, detectionRange, aiLayer))
+        {
+            // If an AI vehicle is detected ahead, switch lanes
+            SwitchLane();
+        }
+    }
+
+    private void SwitchLane()
+    {
+        // Check if the next lane is clear and switch to a different lane
+        int nextLane = Random.Range(0, 3);
+        switch (nextLane)
+        {
+            case 0:
+                if (currentLaneWaypoints != colourGizmos.FarRightWaypoints)  // Ensure we're not already in this lane
+                    currentLaneWaypoints = colourGizmos.FarRightWaypoints;
+                break;
+            case 1:
+                if (currentLaneWaypoints != colourGizmos.middleLaneWaypoints)
+                    currentLaneWaypoints = colourGizmos.middleLaneWaypoints;
+                break;
+            case 2:
+                if (currentLaneWaypoints != colourGizmos.FarLeftWaypoints)
+                    currentLaneWaypoints = colourGizmos.FarLeftWaypoints;
+                break;
         }
     }
 }
+
+
 
