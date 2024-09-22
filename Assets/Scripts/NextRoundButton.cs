@@ -10,7 +10,7 @@ public class NextRoundButton : MonoBehaviour
     public void OnYesButtonClick()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("AI_LEVEL");
+        SceneManager.LoadScene("Level_2");
     }
 
     public void OnNoButtonClick()

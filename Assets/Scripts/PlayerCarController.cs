@@ -53,14 +53,18 @@ public class PlayerCarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isCarStopped)
-        {
-            HandleMovement();
-            HandleTurning();
-        }
+        HandleMovement();
+        HandleTurning();
 
-        CheckIfFlipped();
+        // Update driving data for AI to access
+        PlayerDrivingData playerDrivingData = GetComponent<PlayerDrivingData>();
+        if (playerDrivingData != null)
+        {
+            playerDrivingData.UpdateDrivingData(currentSpeed, GetCurrentAcceleration()); // Pass current speed and current acceleration
+        }
     }
+
+
 
     private void HandleMovement()
     {
@@ -171,5 +175,22 @@ public class PlayerCarController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    // New methods to get driving data
+    public float GetCurrentSpeed()
+    {
+        return currentSpeed;
+    }
 
+    public float GetCurrentAcceleration()
+    {
+        // Assuming acceleration is constant while moving
+        return moveInput > 0 ? acceleration : -deceleration;
+    }
+
+    public float GetCurrentDeceleration()
+    {
+        // Return deceleration value when not accelerating
+        return currentSpeed > 0 ? deceleration : -deceleration;
+    }
 }
+
