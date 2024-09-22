@@ -9,23 +9,27 @@ public class AIDriving : MonoBehaviour
 
     private Colour_Gizmos colourGizmos;
 
-    public float speed = 10f;
+    public float speed;
     public float rotationSpeed = 50f;
-    public float acceleration = 10f;
-    public float maxSpeed = 120f;  // Adjusted max speed for race cars
+    public float acceleration;
+    public float maxSpeed;  // Adjusted max speed for race cars
     public float detectionRange = 5f;  // Range to detect other vehicles ahead
     public LayerMask aiLayer;  // Layer mask for detecting other AI vehicles
     public float cornerDecelerationFactor = 0.3f;  // Reduced factor for less deceleration at corners
 
     private Rigidbody rb;
 
+    // Gear parameters
+    private int currentGear = 1;
+    private float gearChangeSpeedFactor = 0.8f; // Factor to reduce speed during gear change
+    private float gearChangeDuration = 0.5f; // Duration of gear change effect
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate; // Set interpolation for smooth movement
 
-        // Get the Colour_Gizmos script from the same GameObject
         colourGizmos = GetComponent<Colour_Gizmos>();
-
         if (colourGizmos != null)
         {
             ChooseRandomLane();  // Each AI chooses a lane
@@ -38,12 +42,11 @@ public class AIDriving : MonoBehaviour
         // Randomize vehicle behavior for more variability
         acceleration = Random.Range(8f, 12f);  // Different acceleration ranges
         maxSpeed = Random.Range(100f, 150f);   // Different max speed ranges
-        cornerDecelerationFactor = Random.Range(0.2f, 0.5f); // Different deceleration factors
-        speed = Random.Range(5f, 15f); // Starting speed range
-        detectionRange = Random.Range(3f, 7f);  // Random detection range
+        speed = Random.Range(5f, 10f); // Starting speed range
+        detectionRange = Random.Range(10f, 20f);  // Random detection range
     }
 
-    private void Update()
+    private void FixedUpdate() // Changed to FixedUpdate for physics-based calculations
     {
         DriveTowardsNextWaypoint();
         DetectAndAvoidOtherVehicles();  // Check for nearby AI vehicles and avoid them
@@ -57,7 +60,7 @@ public class AIDriving : MonoBehaviour
 
         // Rotate towards the waypoint
         Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-        rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime));
+        rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime));
 
         // Ensure the car's local forward direction is correct
         if (Vector3.Dot(transform.forward, direction.normalized) < 0.95f)
@@ -67,8 +70,8 @@ public class AIDriving : MonoBehaviour
         }
 
         // Move the vehicle forward in the direction it is facing
-        Vector3 moveDir = transform.forward * speed * Time.deltaTime;
-        rb.MovePosition(transform.position + moveDir);
+        Vector3 moveDir = transform.forward * speed * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + moveDir);
 
         // Check if we've reached the waypoint
         if (direction.magnitude < 2f)
@@ -110,12 +113,18 @@ public class AIDriving : MonoBehaviour
         if (currentWaypointIndex < currentLaneWaypoints.Length && currentLaneWaypoints[currentWaypointIndex].CompareTag("Corner"))
         {
             // Slightly decelerate for corners
-            speed = Mathf.Max(speed - (acceleration * cornerDecelerationFactor * Time.deltaTime), 0.8f * maxSpeed);  // Use the factor for deceleration
+            speed = Mathf.Max(speed - (acceleration * cornerDecelerationFactor * Time.fixedDeltaTime), 0.8f * maxSpeed);
         }
         else
         {
             // Speed up to max speed after passing the corner
-            speed = Mathf.Min(speed + (acceleration * Time.deltaTime), maxSpeed);  // Gradually increase speed back to max
+            speed = Mathf.Min(speed + (acceleration * Time.fixedDeltaTime), maxSpeed);
+        }
+
+        // Simulate gear change
+        if (speed > maxSpeed * gearChangeSpeedFactor)
+        {
+            ChangeGear();
         }
     }
 
@@ -124,8 +133,27 @@ public class AIDriving : MonoBehaviour
         // Gradually reduce speed when not accelerating
         if (speed > 20f)  // Prevent it from going below a certain minimum speed
         {
-            speed = Mathf.Max(speed - (acceleration * 0.1f * Time.deltaTime), 20f);  // Gradually reduce speed
+            speed = Mathf.Max(speed - (acceleration * 0.1f * Time.fixedDeltaTime), 20f);  // Gradually reduce speed
         }
+    }
+
+    private void ChangeGear()
+    {
+        // Reduce speed temporarily during gear change
+        speed *= gearChangeSpeedFactor;
+
+        // Wait for gear change duration before accelerating again
+        StartCoroutine(GearChangeCoroutine());
+    }
+
+    private IEnumerator GearChangeCoroutine()
+    {
+        yield return new WaitForSeconds(gearChangeDuration);
+
+        // After the delay, increase speed back towards max
+        speed = Mathf.Min(speed + (acceleration * 2f * Time.fixedDeltaTime), maxSpeed); // Double the acceleration to simulate the post-gear change speed up
+        currentGear++;
+        if (currentGear > 6) currentGear = 1; // Reset gear if it exceeds the max
     }
 
     private void DetectAndAvoidOtherVehicles()
@@ -160,6 +188,7 @@ public class AIDriving : MonoBehaviour
         }
     }
 }
+
 
 
 
