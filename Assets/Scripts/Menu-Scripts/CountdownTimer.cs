@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CountdownTimer : MonoBehaviour
 {
-    public Text countdownText;  // Reference to the UI Text component for countdown display
-    public int countdownTime = 3; // Starting countdown time (from 3)
-    public PlayerCarController playerCarController; // Reference to the car controller script
+    public Text countdownText;  
+    public int countdownTime = 3;
+    public PlayerCarController playerCarController; 
     public AIDriving[] aiVehicles;
 
     private void Start()

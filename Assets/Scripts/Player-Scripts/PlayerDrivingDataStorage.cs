@@ -8,20 +8,20 @@ public class PlayerDrivingDataStorage : MonoBehaviour
     public static PlayerDrivingDataStorage Instance { get; private set; }
 
     // Public properties to store player driving data
-    public float speed; // Speed of the player
-    public float acceleration; // Acceleration of the player
+    public float speed; 
+    public float acceleration; 
 
     private void Awake()
     {
         // Check if there is already an instance
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // Destroy duplicate instance
+            Destroy(gameObject); 
         }
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Keep this instance across scenes
+            DontDestroyOnLoad(gameObject); 
         }
     }
 
@@ -32,6 +32,6 @@ public class PlayerDrivingDataStorage : MonoBehaviour
         acceleration = 0f;
     }
 
-    // Optionally, you can add more methods to manipulate or retrieve driving data
+    
 }
 

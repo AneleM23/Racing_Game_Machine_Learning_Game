@@ -5,10 +5,10 @@ using static UnityEngine.GraphicsBuffer;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
-    public Transform carTransform;  // Reference to the car's transform
-    public Vector3 offset;          // Offset from the car
-    public float smoothSpeed = 0.125f; // Smoothness factor
-    public float rotationSpeed = 5f;   // Speed of the camera rotation
+    public Transform carTransform;  
+    public Vector3 offset;         
+    public float smoothSpeed = 0.125f; 
+    public float rotationSpeed = 5f;   
 
     private void LateUpdate()
     {

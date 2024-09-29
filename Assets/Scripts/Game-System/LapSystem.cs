@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class LapSystem : MonoBehaviour
 {
+    // This script handles the lap system in a racing game, tracking laps, checkpoints, and displaying the lap counter. 
+    // It also manages the UI for proceeding to the next round after completing all laps
+
     public int totalLaps = 5;
     public int currentLap = 0;
     public bool canCountLap = true; // Changed to public
@@ -38,7 +41,7 @@ public class LapSystem : MonoBehaviour
     }
 
     private void HandleCheckpoint(Checkpoint checkpoint)
-    {
+    { // Check if the player passed the correct checkpoint in the right order
         if (checkpoint.index == currentCheckpointIndex)
         {
             passedCheckpoints.Add(currentCheckpointIndex); // Mark this checkpoint as passed
@@ -52,6 +55,7 @@ public class LapSystem : MonoBehaviour
         }
     }
 
+    // Ensure the AI vehicle passed the correct checkpoint in order
     public void AIHandleCheckpoint(int checkpointIndex)
     {
         if (checkpointIndex == currentCheckpointIndex)
@@ -92,12 +96,15 @@ public class LapSystem : MonoBehaviour
         lapCounterText.text = currentLap + "/" + totalLaps;
     }
 
+    // Display the next round UI and pause the game when all laps are completed
+
     private void ShowNextRoundUI()
     {
         nextRoundUI.SetActive(true);
         Time.timeScale = 0f; // Pause the game
     }
 
+    // Cooldown to prevent multiple triggers from counting the same lap
     private IEnumerator LapCooldown()
     {
         canCountLap = false;

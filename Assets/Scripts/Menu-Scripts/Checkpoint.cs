@@ -6,7 +6,7 @@ public class Checkpoint : MonoBehaviour
 {
 
 
-    // Assign this in the Unity Inspector
+    
     public int index; 
     
 

@@ -5,26 +5,30 @@ using TMPro;
 
 public class SpeedometerUI : MonoBehaviour
 {
-    public PlayerCarController carController; // Reference to your car controller script
-    public TextMeshProUGUI speedText; // Reference to the TextMeshProUGUI component
+    public PlayerCarController carController; 
+    public TextMeshProUGUI speedText; 
 
     private void Start()
     {
         if (carController == null)
         {
-            carController = FindObjectOfType<PlayerCarController>(); // Automatically find the car controller if not set
+            // Automatically find the car controller if not set
+            carController = FindObjectOfType<PlayerCarController>(); 
         }
 
         if (speedText == null)
         {
-            speedText = GetComponent<TextMeshProUGUI>(); // Automatically find the TextMeshProUGUI if not set
+            // Automatically find the TextMeshProUGUI if not set
+            speedText = GetComponent<TextMeshProUGUI>();
         }
     }
 
     private void Update()
     {
-        float speed = Mathf.Abs(carController.currentSpeed); // Get the absolute value of the car's current speed
-        speedText.text = Mathf.RoundToInt(speed).ToString(); // Update the UI text with the speed
+        // Get the absolute value of the car's current speed
+        float speed = Mathf.Abs(carController.currentSpeed);
+        // Update the UI text with the speed
+        speedText.text = Mathf.RoundToInt(speed).ToString(); 
     }
 
 }

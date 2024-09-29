@@ -12,28 +12,28 @@ public class PlayerCarController : MonoBehaviour
     public float deceleration = 20f;
 
     public AudioSource accelerationAudioSource;
-    public AudioSource idleAudioSource; // Idle sound
-    public GameObject restartButton; // Reference to the Restart button
+    public AudioSource idleAudioSource;
+    public GameObject restartButton; 
 
     private Rigidbody rb;
     public float currentSpeed = 0f;
     private float moveInput = 0f;
     private float turnInput = 0f;
-    private bool isCarStopped = false; // Flag to check if the car is stopped
+    private bool isCarStopped = false; 
 
-    private Vector3 initialPosition;  // Store initial position for resetting
-    private Quaternion initialRotation; // Store initial rotation for resetting
+    private Vector3 initialPosition;  
+    private Quaternion initialRotation; 
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        accelerationAudioSource.Play(); // Play the sound at the start
+        accelerationAudioSource.Play(); 
 
         // Save the initial position and rotation
         initialPosition = transform.position;
         initialRotation = transform.rotation;
 
-        // Hide the restart button at the start
+        
         if (restartButton != null)
         {
             restartButton.SetActive(false);
@@ -104,15 +104,16 @@ public class PlayerCarController : MonoBehaviour
 
     private void HandleAudio()
     {
-        float normalizedSpeed = Mathf.Abs(currentSpeed) / maxSpeed; // Normalize speed between 0 and 1
+        float normalizedSpeed = Mathf.Abs(currentSpeed) / maxSpeed;
 
         // Adjust the pitch based on the normalized speed
-        accelerationAudioSource.pitch = Mathf.Lerp(1.0f, 2.0f, normalizedSpeed); // Pitch range from 1.0 to 2.0
+        accelerationAudioSource.pitch = Mathf.Lerp(1.0f, 2.0f, normalizedSpeed);
 
         // Adjust the volume based on input
         if (Mathf.Abs(currentSpeed) > 0)
         {
-            accelerationAudioSource.volume = Mathf.Lerp(accelerationAudioSource.volume, 1.0f, Time.deltaTime * 2.0f); // Smoothly increase volume
+            // Smoothly increase volume
+            accelerationAudioSource.volume = Mathf.Lerp(accelerationAudioSource.volume, 1.0f, Time.deltaTime * 2.0f); 
 
             if (!accelerationAudioSource.isPlaying)
             {
@@ -125,7 +126,8 @@ public class PlayerCarController : MonoBehaviour
         }
         else
         {
-            accelerationAudioSource.volume = Mathf.Lerp(accelerationAudioSource.volume, 0.5f, Time.deltaTime * 2.0f); // Smoothly reduce volume when not accelerating
+            // Smoothly reduce volume when not accelerating
+            accelerationAudioSource.volume = Mathf.Lerp(accelerationAudioSource.volume, 0.5f, Time.deltaTime * 2.0f); 
 
             if (!idleAudioSource.isPlaying)
             {
@@ -138,7 +140,7 @@ public class PlayerCarController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the car hits something hard enough
-        if (collision.relativeVelocity.magnitude > 5f) // Threshold can be adjusted
+        if (collision.relativeVelocity.magnitude > 5f) 
         {
             StopCar();
         }
@@ -147,7 +149,7 @@ public class PlayerCarController : MonoBehaviour
     private void CheckIfFlipped()
     {
         // Check if the car is flipped over based on its rotation
-        if (Vector3.Dot(transform.up, Vector3.down) > 0.5f) // Adjust the threshold if needed
+        if (Vector3.Dot(transform.up, Vector3.down) > 0.5f) 
         {
             StopCar();
         }
@@ -163,10 +165,10 @@ public class PlayerCarController : MonoBehaviour
         // Show the restart button
         if (restartButton != null)
         {
-            restartButton.SetActive(true); // Show the button
+            restartButton.SetActive(true); 
         }
 
-        Debug.Log("Car Crashed!"); // Log crash message
+        Debug.Log("Car Crashed!"); 
     }
 
     public void RestartGame()
