@@ -159,8 +159,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 325, y: 181}
-  m_SizeDelta: {x: 203.6404, y: 47.6387}
+  m_AnchoredPosition: {x: 703.2605, y: 421}
+  m_SizeDelta: {x: 485.51, y: 107.1002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &83452321
 MonoBehaviour:
@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1181385998}
-        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: ReturnToMenu
+      - m_Target: {fileID: 1181385999}
+        m_TargetAssemblyTypeName: MenuMusicManager, Assembly-CSharp
+        m_MethodName: GoToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -423,11 +423,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 60
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 60
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 1181385995}
   - component: {fileID: 1181385994}
   - component: {fileID: 1181385998}
+  - component: {fileID: 1181385999}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -777,10 +778,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -838,13 +839,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181385993}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9107ecede1c1f1d4eb22ee27618ae56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isGamePaused: 0
   pauseMenuPanel: {fileID: 0}
+--- !u!114 &1181385999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181385993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5c5acedabf52f4a88de3240f9d2878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  menuSongs: []
 --- !u!1 &1227741561
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,8 +894,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -14.2805, y: 136.9282}
-  m_SizeDelta: {x: 440.848, y: 156.1436}
+  m_AnchoredPosition: {x: -1.0669, y: 365}
+  m_SizeDelta: {x: 923.147, y: 156.1436}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1227741563
 MonoBehaviour:

@@ -50,8 +50,8 @@ public class AIDriving : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Check if the AI vehicle has completed 5 laps
-        if (lapSystem.currentLap >= lapSystem.totalLaps)
+        // Check if the AI vehicle has completed all laps
+        if (lapSystem.HasCompletedAllLaps())
         {
             // Stop the AI vehicle
             speed = 0f;
@@ -63,7 +63,6 @@ public class AIDriving : MonoBehaviour
             DriveTowardsNextWaypoint();
             DetectAndAvoidOtherVehicles();
         }
-
     }
 
     private void DriveTowardsNextWaypoint()
@@ -79,7 +78,7 @@ public class AIDriving : MonoBehaviour
             return;
         }
 
-        Vector3 moveDir = transform.forward * speed * Time.fixedDeltaTime;
+        Vector3 moveDir = direction.normalized * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + moveDir);
 
         if (direction.magnitude < 2f)

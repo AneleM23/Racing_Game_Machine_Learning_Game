@@ -11,15 +11,15 @@ public class MenuMusicManager : MonoBehaviour
     private static MenuMusicManager instance;
     private static bool musicStarted = false;
 
-    private void Awake()
-    {
-        GameObject[] musicObj = GameObject.FindGameObjectsWithTag("GameMusic");
-        if (musicObj.Length > 1)
-        {
-            Destroy(this.gameObject);
-        }
-        DontDestroyOnLoad(this.gameObject);
-    }
+   // private void Awake()
+   // {
+    //    GameObject[] musicObj = GameObject.FindGameObjectsWithTag("GameMusic");
+    //    if (musicObj.Length > 1)
+     //   {
+      //      Destroy(this.gameObject);
+      //  }
+       // DontDestroyOnLoad(this.gameObject);
+   // }
 
     private void Start()
     {
@@ -45,21 +45,25 @@ public class MenuMusicManager : MonoBehaviour
 
     public void StartGame()
     {
+        Debug.Log("Game Has Started");
         SceneManager.LoadScene("Level_1");
     }
 
     public void GoToCredits()
     {
+        Debug.Log("Credits");
         SceneManager.LoadScene("Credits");
     }
 
     public void GoToTest()
     {
+        Debug.Log("Test Scene");
         SceneManager.LoadScene("Level_3");
     }
     public void GoToMenu()
     {
-        SceneManager.LoadScene(0);
+        Debug.Log("Menu Scene");
+        SceneManager.LoadScene("Menu");
     }
 
     public void QuitGame()
