@@ -376,9 +376,10 @@ GameObject:
   m_Component:
   - component: {fileID: 360845772}
   - component: {fileID: 360845771}
+  - component: {fileID: 360845773}
   m_Layer: 0
   m_Name: AUDIOSOURCE
-  m_TagString: Untagged
+  m_TagString: GameMusic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -395,8 +396,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.4
+  m_Pitch: 0.72
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -494,6 +495,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &360845773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360845770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 920cbbf7708827641b1764a30945a2b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &427762993
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,12 +617,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 360845771}
   menuSongs:
-  - {fileID: 8300000, guid: 50fd11d7776feab4db760653909dbff1, type: 3}
-  - {fileID: 8300000, guid: f7f909840c46a2d44af0d7c8371741f2, type: 3}
-  - {fileID: 8300000, guid: 7fc8bbf231221c44e960d7a2dd3cf883, type: 3}
-  - {fileID: 8300000, guid: 0cf9ed4f7979ad74980534eb30e70b38, type: 3}
-  - {fileID: 8300000, guid: f23112a1d5f20a34fab85c00acbefbdf, type: 3}
-  - {fileID: 8300000, guid: c0032cc4c5f117e498feba1deafa1f92, type: 3}
+  - {fileID: 8300000, guid: 2c429c61106854e4cab601d2578cdd46, type: 3}
+  - {fileID: 8300000, guid: bafb51c670af18d4b98b2aed9dccf6e5, type: 3}
+  - {fileID: 8300000, guid: 1eaa7493f6d519742af23573eb00af24, type: 3}
+  - {fileID: 8300000, guid: 74b8c021feae2b24a879d25f875d3380, type: 3}
+  - {fileID: 8300000, guid: 99a6451dee43f3e49bd1fd56d97ff11b, type: 3}
+  - {fileID: 8300000, guid: eb038531f6de2db4f9c312d0b7a6f84b, type: 3}
   - {fileID: 8300000, guid: a53ee0863e7e1274c809cd4fd3ba5dad, type: 3}
   - {fileID: 8300000, guid: 2061fa280fa621f4e8b47c0ddd467696, type: 3}
 --- !u!4 &762544846
@@ -981,7 +994,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1145300049}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 762544845}
+        m_TargetAssemblyTypeName: MenuMusicManager, Assembly-CSharp
+        m_MethodName: GoToCredits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1145300049
 MonoBehaviour:
   m_ObjectHideFlags: 0

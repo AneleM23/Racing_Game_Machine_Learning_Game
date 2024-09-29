@@ -9,7 +9,7 @@ public class AIDriving : MonoBehaviour
 
     private Colour_Gizmos colourGizmos;
 
-    private LapSystem lapSystem;
+    public LapSystem lapSystem;
 
     public float speed;
     public float rotationSpeed = 50f;
@@ -50,15 +50,20 @@ public class AIDriving : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Check if the AI has completed all laps
-        if (lapSystem != null && lapSystem.currentLap >= lapSystem.totalLaps)
+        // Check if the AI vehicle has completed 5 laps
+        if (lapSystem.currentLap >= lapSystem.totalLaps)
         {
-            speed = 0;  // Stop the AI vehicle
-            return;  // Skip the rest of the update
+            // Stop the AI vehicle
+            speed = 0f;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+        else
+        {
+            DriveTowardsNextWaypoint();
+            DetectAndAvoidOtherVehicles();
         }
 
-        DriveTowardsNextWaypoint();
-        DetectAndAvoidOtherVehicles();
     }
 
     private void DriveTowardsNextWaypoint()
