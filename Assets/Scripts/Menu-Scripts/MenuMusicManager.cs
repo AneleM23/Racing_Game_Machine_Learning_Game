@@ -52,6 +52,11 @@ public class MenuMusicManager : MonoBehaviour
     {
         SceneManager.LoadScene("Credits");
     }
+
+    public void GoToTest()
+    {
+        SceneManager.LoadScene("Level_3");
+    }
     public void GoToMenu()
     {
         SceneManager.LoadScene(0);
