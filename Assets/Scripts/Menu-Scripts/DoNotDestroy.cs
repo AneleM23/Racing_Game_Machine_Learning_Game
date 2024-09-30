@@ -5,7 +5,7 @@ using UnityEngine;
 public class DoNotDestroy : MonoBehaviour
 {
     private void Awake()
-    {
+    {//The audiosouce is not destroyed throughtout the game
         GameObject[] musicObj = GameObject.FindGameObjectsWithTag("GameMusic");
         if(musicObj.Length > 1 )
         {
